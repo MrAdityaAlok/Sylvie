@@ -7,8 +7,11 @@ def evaluate(text: str, interpreter_type: str):
     return parser.Parser(text).expr()
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Mathematical interpreter")
+def main(script: str = "Sylvie"):
+    parser = argparse.ArgumentParser(
+        description="Mathematical interpreter",
+        usage=f"{script} [-h] [-i INTERPRETER_TYPE]",
+    )
     parser.add_argument(
         "-i",
         "--interpreter-type",
