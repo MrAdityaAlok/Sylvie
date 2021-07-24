@@ -14,7 +14,7 @@ class BinOp(AST):
 @dataclass
 class Num(AST):
     token: Token
-    value: Union[int,float] = field(init=False)
+    value: Union[int, float] = field(init=False)
 
     def __post_init__(self):
         self.value = self.token.value
