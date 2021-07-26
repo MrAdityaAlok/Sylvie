@@ -1,8 +1,0 @@
-[tool.black]
-
-line-length = 79
-experimental-string-processing = true
-
-[tool.interrogate]
-
-verbose = 1
