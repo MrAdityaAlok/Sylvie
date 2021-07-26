@@ -1,4 +1,4 @@
-expr: mul((MINUS|PLUS)mul)*
+sub_expr: mul((MINUS|PLUS)mul)*
 mul: term((MULTIPLY|DIV)term)*
 term: (MINUS|PLUS)*factor
-factor: NUMBER | LPAREN expr RPAREN 
+factor: NUMBER | LPAREN sub_expr RPAREN 

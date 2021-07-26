@@ -1,10 +1,5 @@
-import importlib
 import argparse
-
-
-def evaluate(text: str, interpreter_type: str):
-    parser = importlib.import_module(f"sylvie.interpreter.{interpreter_type}.parser")
-    return parser.Parser(text).expr()
+import importlib
 
 
 def main(script: str = "Sylvie"):
@@ -17,22 +12,22 @@ def main(script: str = "Sylvie"):
         "--interpreter-type",
         default=0,
         type=int,
-        help="Change interpreter used. Pass 0 (default) for syntax-directed or 1 for ast-based",
+        help=(
+            "Change interpreter used. Pass 0 (default) for syntax-directed or"
+            " 1 for ast-based"
+        ),
     )
     args = parser.parse_args()
+    parser = importlib.import_module(
+        "sylvie.interpreter."
+        f"{('syntax_directed', 'ast_based')[args.interpreter_type]}.parser"
+    )
 
     try:
         while True:
             text = input("calc >> ")
             try:
-                print(
-                    evaluate(
-                        text,
-                        interpreter_type=("syntax_directed", "ast_based")[
-                            args.interpreter_type
-                        ],
-                    )
-                )
+                print(parser.Parser(text).expr())
             except Exception as err:
                 print(err)
     except (KeyboardInterrupt, EOFError):

@@ -18,4 +18,4 @@ repos:
     rev: 1.4.0
     hooks:
       - id: interrogate
-        args: [-v]
+        args: [-c, -e "src/Sylvie", -m, -r "^error$", -s, -S, -p]

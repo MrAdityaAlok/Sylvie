@@ -1,7 +1,8 @@
-from sylvie.interpreter.tokens import Token
 from dataclasses import dataclass, field
-from sylvie.interpreter.ast_based.ast import AST
 from typing import Union
+
+from sylvie.interpreter.ast_based.ast import AST
+from sylvie.interpreter.tokens import Token
 
 
 @dataclass

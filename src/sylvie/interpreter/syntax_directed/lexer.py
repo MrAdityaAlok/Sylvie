@@ -8,14 +8,6 @@ from typing import Any, Generator, Union
 
 from sylvie.interpreter.tokens import Token, TokenType
 
-MINUS = "-"
-PLUS = "+"
-DIV = "/"
-MULTIPLY = "*"
-DECIMAL = "."
-LPAREN = "("
-RPAREN = ")"
-
 
 class Lexer:
     def __init__(self, text) -> None:
@@ -43,7 +35,7 @@ class Lexer:
             if self.current_char.isspace():
                 self.advance()
 
-            if self.current_char.isdigit() or self.current_char == DECIMAL:
+            if self.current_char.isdigit() or self.current_char == ".":
                 yield self.scan_digits()
 
             try:
@@ -57,7 +49,6 @@ class Lexer:
                 token = Token(token_type, token_type.value)
 
             self.advance()
-
             yield token
 
     def scan_digits(self) -> Token:
@@ -66,9 +57,9 @@ class Lexer:
         num: str = ""
 
         while self.current_char and (
-            self.current_char.isdigit() or self.current_char == DECIMAL
+            self.current_char.isdigit() or self.current_char == "."
         ):
-            if self.current_char == DECIMAL:
+            if self.current_char == ".":
                 decimal_count += 1
             if decimal_count > 1:
                 self.error("More than one decimal in single number")
@@ -76,9 +67,9 @@ class Lexer:
             num += self.current_char
             self.advance()
 
-        if num.startswith(DECIMAL):
+        if num.startswith("."):
             num = "0" + num
-        elif num.endswith(DECIMAL):
+        elif num.endswith("."):
             num += "0"
 
         return (
