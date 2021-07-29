@@ -5,14 +5,18 @@ as text and then evaluate it.
 
 Examples:
     As REPL:
+
         >> 4*8(93-2/4*3)-9
         -8.650273224043715
+
         >> 8/4
         2.0
+
         >> 5*5
         25
 
     As module:
+
         calc = Sylvie()
         print(calc.parse("4*8"))
 """
@@ -21,9 +25,7 @@ from typing import Union
 
 
 class Sylvie:
-    """Evaluates a mathematical expressions.
-
-    Takes an mathematical expressions as input and then evaluates it.
+    """Evaluates the given mathematical expressions.
 
     Attributes:
         interpreter_type: Optional; An integer value representing
@@ -31,7 +33,7 @@ class Sylvie:
     """
 
     def __init__(self, interpreter_type: int = 0) -> None:
-        """Initialize Sylvie's interpreter type.
+        """Initializes Sylvie's interpreter type.
 
         Args:
             interpreter_type: Optional; An integer representing interpreter
@@ -65,12 +67,11 @@ class Sylvie:
             Result of expressions as integer or float.
         """
         if self.interpreter_type == 0:
-            from sylvie._syntax_directed.parser import Parser
+            from sylvie.syntax_directed.parser import Parser
         else:
-            # from sylvie._ast_based.parser import Parser
+            # from sylvie.ast_based.parser import Parser
             raise NotImplementedError(
-                "Parser for ast based interpreter has not been implemented,"
-                " yet."
+                "Parser for ast based interpreter has not been implemented yet."
             )
 
         return Parser(text=text).expr()
@@ -86,17 +87,23 @@ def _main():
         nargs=1,
         default=0,
         type=int,
-        help="""Change interpreter type.
-            Pass 1 for ast based or 0 (default) for syntax directed.
-            """,
+        help=(
+            "Change interpreter type."
+            " Pass 1 for ast based or 0 (default) for syntax directed."
+        ),
     )
     s = Sylvie(parser.parse_args().interpreter_type)
+
+    def evaluate():
+        try:
+            text = input(">> ")
+            print(s.parse(text=text))
+        except (ValueError, SyntaxError) as err:
+            print("Error :", err)
+
     try:
         while True:
-            text = input("calc >> ")
-            print(s.parse(text=text))
-    except Exception as err:  # errors raised by lexer and parser
-        print("Error:", err)
+            evaluate()
     except EOFError:
         print("Exiting as requested.")
 

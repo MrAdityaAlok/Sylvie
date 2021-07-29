@@ -13,8 +13,8 @@ Grammar:
 
 from typing import Union
 
-from sylvie._syntax_directed.lexer import Lexer
-from sylvie._tokens import TokenType
+from sylvie.syntax_directed.lexer import Lexer
+from sylvie.tokens import TokenType
 
 
 class Parser:
@@ -124,24 +124,8 @@ class Parser:
     def sub_expr(self) -> Union[int, float]:
         """Evaluates PLUS and MINUS terminal.
 
-        This also raise error when one expression is not connected to
-        another.
-        For Example:
-
-            Previously, following is though error but was not checked
-            as expression (4*8) was successfully evaluated and after it, there
-            were no connecting terminals(+,-,*,/) and hence program would end.
-
-                calc >> (4*8)8
-                32
-
-            But now if last character is not EOF then raise SyntaxError.
-
-        I first implemented it in expr() function but it then checks whether
-        there is EOF after every expression [i.e even after (4*8) in (4*8)+5],
-        even if whether token is connecting terminal.
-
-        Now only last token need to be EOF.
+        Raises: SyntaxError
+            If the expression is not valid.
 
         sub_expr: mul ((PLUS | MINUS) mul)*
         """
@@ -163,10 +147,22 @@ class Parser:
     def expr(self) -> Union[int, float]:
         """Returns parsed arithmetic expression."""
         result = self.sub_expr()
+
+        # Previously expressions like (4*8)8 were evaluated correct
+        # although last token [i.e after first expression, i.e (4*8)] was not EOF.
+        #
+        # It was due to the reason that expression (4*8) was successfully
+        # evaluated and after it, since there were no connecting terminals(+,-,*,/),
+        # program would end successfully.
+        #
+        #     Example:
+        #
+        #         calc >> (4*8)8
+        #         32
+        #
+        # But now if last character is not EOF then SyntaxError is raised.
         if self.current_token.type != TokenType.EOF:
             self.error(
-                "Unexpected character '{}' at column {}".format(
-                    self.current_token.value, self.column
-                )
+                "Unexpected end of expression at column {}".format(self.column)
             )
         return result

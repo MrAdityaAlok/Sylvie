@@ -6,7 +6,7 @@ tokens.
 
 from typing import Any, Generator, Union
 
-from sylvie._tokens import Token, TokenType
+from sylvie.tokens import Token, TokenType
 
 
 class Lexer:
