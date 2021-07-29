@@ -49,7 +49,8 @@ class Lexer:
                 # get enum member by value, e.g.
                 # TokenType('(') --> TokenType.LPAREN
                 token_type = TokenType(self.current_char)
-            except ValueError:  # TODO: define lexing exception
+            # skipcq: PYL-W0511
+            except ValueError:  # TODO: define custom exceptions
                 # if self.current_char not member of TokenType
                 self.error(f"Invalid character '{self.current_char}'")
             else:
