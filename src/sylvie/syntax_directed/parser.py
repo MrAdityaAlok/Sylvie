@@ -163,7 +163,5 @@ class Parser:
         #
         # But now if last character is not EOF then SyntaxError is raised.
         if self.current_token.type != TokenType.EOF:
-            self.error(
-                "Unexpected end of expression at column {}".format(self.column)
-            )
+            self.error("Unexpected end of expression at column {}".format(self.column))
         return result
