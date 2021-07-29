@@ -1,25 +1,38 @@
 """This module parses the lexed tokens and evaluates the expression.
 
-    Example:
-        calc >> --7 + 3 * (10 / (12 / (3 + 1) - 1))
-        22
+Example:
+    input: --7 + 3 * (10 / (12 / (3 + 1) - 1))
+    output: 22
 
-    Grammar:
-        sub_expr  : mul ((PLUS | MINUS) mul)*
-        mul       : term ((MUL | DIV) term))*
-        term      : (PLUS | MINUS)* factor
-        factor    : NUMBER | LPAREN sub_expr RPAREN
+Grammar:
+    sub_expr  : mul ((PLUS | MINUS) mul)*
+    mul       : term ((MUL | DIV) term))*
+    term      : (PLUS | MINUS)* factor
+    factor    : NUMBER | LPAREN sub_expr RPAREN
 """
 
 from typing import Union
 
-from sylvie.interpreter.syntax_directed.lexer import Lexer
-from sylvie.interpreter.tokens import TokenType
+from sylvie._syntax_directed.lexer import Lexer
+from sylvie._tokens import TokenType
 
 
 class Parser:
+    """This class parses the lexed expression.
+
+    Attributes:
+        text: mathematical expression to evaluated.
+
+    Functions:
+        expr: returns result of input expression.
+    """
+
     def __init__(self, text: str) -> None:
-        """Parses tokens and evaluates the expression formed."""
+        """Parses tokens and evaluates the expression formed.
+
+        Args:
+            text: text to be parsed.
+        """
         self.tokens = Lexer(text).get_tokens()
         self.column = 0
         self.advance()
@@ -39,8 +52,14 @@ class Parser:
     def eat(self, expected_token: TokenType) -> None:
         """Validated current token and advance to next token.
 
-        Checks if current token is the the token we expect to be present,
-        if not then raise SyntaxError.
+        Checks if current token is the the token we expect
+        currently to be present.
+
+        Args:
+            expected_token: token that we except current_token to be
+
+        Raise:
+            SyntaxError when current_token is not the expected_token.
         """
         if self.current_token.type == expected_token:
             self.advance()
@@ -52,7 +71,10 @@ class Parser:
             )
 
     def factor(self) -> Union[int, float]:
-        """factor : NUMBER | LPAREN sub_expr RPAREN"""
+        """Extracts NUMBER or PAREN terminal.
+
+        factor : NUMBER | LPAREN sub_expr RPAREN
+        """
         token = self.current_token
         if token.type == TokenType.NUMBER:
             self.eat(TokenType.NUMBER)
@@ -65,7 +87,10 @@ class Parser:
         return result
 
     def term(self) -> Union[int, float]:
-        """term : (MINUS | PLUS)* factor"""
+        """Evaluates PLUS or MINUS terminal of NUMBER terminal.
+
+        term : (MINUS | PLUS)* factor
+        """
         minus_count = 0
         while self.current_token.type in (TokenType.PLUS, TokenType.MINUS):
             if self.current_token.type == TokenType.PLUS:
@@ -77,8 +102,11 @@ class Parser:
         result = self.factor()
         return (0 - result) if minus_count % 2 else result
 
-    def mul(self):
-        """mul : term ((MUL | DIV) term)*"""
+    def mul(self) -> Union[int, float]:
+        """Evaluates MUL and DIV terminals.
+
+        mul : term ((MUL | DIV) term)*
+        """
         result = self.term()
         while self.current_token.type in (TokenType.MULTIPLY, TokenType.DIV):
             if self.current_token.type == TokenType.MULTIPLY:
@@ -94,7 +122,29 @@ class Parser:
         return result
 
     def sub_expr(self) -> Union[int, float]:
-        """sub_expr: mul ((PLUS | MINUS) mul)*"""
+        """Evaluates PLUS and MINUS terminal.
+
+        This also raise error when one expression is not connected to
+        another.
+        For Example:
+
+            Previously, following is though error but was not checked
+            as expression (4*8) was successfully evaluated and after it, there
+            were no connecting terminals(+,-,*,/) and hence program would end.
+
+                calc >> (4*8)8
+                32
+
+            But now if last character is not EOF then raise SyntaxError.
+
+        I first implemented it in expr() function but it then checks whether
+        there is EOF after every expression [i.e even after (4*8) in (4*8)+5],
+        even if whether token is connecting terminal.
+
+        Now only last token need to be EOF.
+
+        sub_expr: mul ((PLUS | MINUS) mul)*
+        """
         result = self.mul()
 
         while self.current_token.type in (
@@ -110,8 +160,8 @@ class Parser:
                 result -= self.mul()
         return result
 
-    def expr(self):
-        """Parsed arithmetic expression."""
+    def expr(self) -> Union[int, float]:
+        """Returns parsed arithmetic expression."""
         result = self.sub_expr()
         if self.current_token.type != TokenType.EOF:
             self.error(

@@ -1,5 +1,0 @@
-#!/data/data/com.termux/files/usr/bin/python3
-
-from sylvie import main
-
-main()

@@ -1,10 +1,5 @@
-"""This module is used when executing this package directly
-with python -m sylvie.
+"""This module allows using `python -m sylvie` command to start REPL."""
 
-Python calls this module automaticaly after __init__.py
-when used as stated above.
-"""
+from sylvie import _main
 
-from sylvie import main
-
-main(script="python -m sylvie")
+_main()
