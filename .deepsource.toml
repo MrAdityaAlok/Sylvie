@@ -1,7 +1,7 @@
 version = 1
 
 test_patterns = ["src/**"]
-exclude_patterns = ["src/ast_based/**"]
+exclude_patterns = ["src/sylvie/ast_based/**"]
 
 [[analyzers]]
 name = "python"
