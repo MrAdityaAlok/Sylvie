@@ -77,7 +77,7 @@ class Sylvie:
         return Parser(text=text).expr()
 
 
-def _main():
+def _main():  # skipcq: PY-D0003
     import argparse
 
     parser = argparse.ArgumentParser(description="Sylvie's math interpreter")
@@ -94,7 +94,7 @@ def _main():
     )
     s = Sylvie(parser.parse_args().interpreter_type)
 
-    def evaluate():
+    def evaluate():  # skipcq: PY-D0003
         try:
             text = input(">> ")
             print(s.parse(text=text))

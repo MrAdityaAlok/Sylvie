@@ -46,7 +46,7 @@ class Parser:
             pass
 
     @staticmethod
-    def error(msg: str) -> None:
+    def error(msg: str) -> None:  # skipcq: PY-D0003
         raise SyntaxError(msg)
 
     def eat(self, expected_token: TokenType) -> None:

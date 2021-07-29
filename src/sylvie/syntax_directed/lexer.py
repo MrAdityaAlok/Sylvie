@@ -33,7 +33,7 @@ class Lexer:
             self.current_char = "EOF" if self.current_char != "EOF" else None
 
     @staticmethod
-    def error(msg: str):
+    def error(msg: str):  # skipcq: PY-D0003
         raise ValueError(f"ValueError: {msg}")
 
     def get_tokens(self) -> Generator:
