@@ -69,8 +69,7 @@ class Sylvie:
         else:
             # from sylvie._ast_based.parser import Parser
             raise NotImplementedError(
-                "Parser for ast based interpreter has not been implemented,"
-                " yet."
+                "Parser for ast based interpreter has not been implemented," " yet."
             )
 
         return Parser(text=text).expr()
