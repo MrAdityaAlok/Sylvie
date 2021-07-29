@@ -67,6 +67,7 @@ class Sylvie:
             Result of expressions as integer or float.
         """
         if self.interpreter_type == 0:
+            # pylint: disable=C0415
             from sylvie.syntax_directed.parser import Parser
         else:
             # from sylvie.ast_based.parser import Parser
@@ -78,7 +79,7 @@ class Sylvie:
 
 
 def _main():  # skipcq: PY-D0003
-    import argparse
+    import argparse  # pylint: disable=C0415
 
     parser = argparse.ArgumentParser(description="Sylvie's math interpreter")
     parser.add_argument(
@@ -92,7 +93,7 @@ def _main():  # skipcq: PY-D0003
             " Pass 1 for ast based or 0 (default) for syntax directed."
         ),
     )
-    s = Sylvie(parser.parse_args().interpreter_type)
+    s = Sylvie(parser.parse_args().interpreter_type)  # pylint: disable=C0103
 
     def evaluate():  # skipcq: PY-D0003
         try:
