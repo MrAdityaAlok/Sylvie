@@ -149,11 +149,12 @@ class Parser:
         result = self.sub_expr()
 
         # Previously expressions like (4*8)8 were evaluated correct
-        # although last token [i.e after first expression, i.e (4*8)] was not EOF.
+        # although last token [i.e after first expression,
+        # i.e (4*8)] was not EOF.
         #
         # It was due to the reason that expression (4*8) was successfully
-        # evaluated and after it, since there were no connecting terminals(+,-,*,/),
-        # program would end successfully.
+        # evaluated and after it, since there were no connecting
+        # terminals(+,-,*,/), program would end successfully.
         #
         #     Example:
         #

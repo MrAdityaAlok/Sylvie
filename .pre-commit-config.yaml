@@ -1,4 +1,4 @@
-exclude: "src/sylvie/_ast_based/" # still not implemented
+exclude: "src/sylvie/ast_based/" # still not implemented
 repos:
   - repo: https://github.com/psf/black
     rev: 21.7b0
