@@ -43,7 +43,6 @@ class Parser:
         Args:
             text: text to be parsed.
         """
-
         self.tokens = self.lexer.analyze(text)
         self.column = 0
         self.advance()
