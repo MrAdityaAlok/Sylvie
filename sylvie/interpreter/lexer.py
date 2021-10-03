@@ -19,7 +19,8 @@ class Lexer:
     def __init__(self) -> None:
         """Initialize lexer."""
 
-        pass
+        self.text = None
+        self.current_char: Union[str, Any] = None
 
     def analyze(self, text: str) -> Generator:
         """Converts input text into a stream of tokens.
@@ -35,7 +36,7 @@ class Lexer:
     def advance(self) -> None:
         """Move to next character."""
         try:
-            self.current_char: Union[str, Any] = next(self.text)
+            self.current_char = next(self.text)
         except StopIteration:
             self.current_char = "EOF" if self.current_char != "EOF" else None
 

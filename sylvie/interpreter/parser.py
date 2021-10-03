@@ -31,6 +31,9 @@ class Parser:
         """Initialize parser."""
 
         self.lexer = Lexer()
+        self.tokens = None
+        self.column = 0
+        self.current_token = None
 
     def parse(self, text: str) -> Union[int, float]:
         """Parses tokens and evaluates the expression formed.
@@ -122,10 +125,7 @@ class Parser:
                 result *= self.term()
             elif self.current_token.type == TokenType.DIV:
                 self.eat(TokenType.DIV)
-                try:
-                    result /= self.term()
-                except ZeroDivisionError:
-                    raise
+                result /= self.term()
         return result
 
     def sub_expr(self) -> Union[int, float]:
