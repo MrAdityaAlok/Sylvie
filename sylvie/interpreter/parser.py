@@ -29,7 +29,6 @@ class Parser:
 
     def __init__(self) -> None:
         """Initialize parser."""
-
         self.lexer = Lexer()
         self.tokens = None
         self.column = 0
@@ -37,6 +36,9 @@ class Parser:
 
     def parse(self, text: str) -> Union[int, float]:
         """Parses tokens and evaluates the expression formed.
+
+        This function takes an expression as input and returns its value
+        after evaluating.
 
         Args:
             text: text to be parsed.

@@ -36,6 +36,6 @@ if str(script_dir.parent) not in sys.path:
     # insert parent of script_dir (sylvie/), i.e src/ to sys.path
     sys.path.insert(0, str(script_dir.parent))
 
-from sylvie.bin import cmd
+from sylvie.bin import cmd  # skipcq: FLK-E402
 
 cmd()

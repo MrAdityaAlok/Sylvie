@@ -1,12 +1,10 @@
 """This module contains functioncs to run Sylvie from command line."""
 
-from typing import Union
 from sylvie.interpreter.parser import Parser
 
 
 def cmd():
     """Starts Sylvie's REPL."""
-
     parser = Parser()
     try:
         while True:
