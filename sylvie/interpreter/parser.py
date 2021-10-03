@@ -29,7 +29,6 @@ class Parser:
 
     def __init__(self) -> None:
         """Initialize parser."""
-
         self.lexer = Lexer()
         self.tokens = None
         self.column = 0
@@ -41,7 +40,6 @@ class Parser:
         Args:
             text: text to be parsed.
         """
-
         self.tokens = self.lexer.analyze(text)
         self.column = 0
         self.advance()

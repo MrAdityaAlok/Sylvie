@@ -6,7 +6,6 @@ from sylvie.interpreter.parser import Parser
 
 def cmd():
     """Starts Sylvie's REPL."""
-
     parser = Parser()
     try:
         while True:

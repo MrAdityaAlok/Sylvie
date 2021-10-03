@@ -18,7 +18,6 @@ class Lexer:
 
     def __init__(self) -> None:
         """Initialize lexer."""
-
         self.text = None
         self.current_char: Union[str, Any] = None
 
