@@ -13,8 +13,8 @@ Grammar:
 
 from typing import Union
 
-from sylvie.syntax_directed.lexer import Lexer
-from sylvie.tokens import TokenType
+from sylvie.interpreter.lexer import Lexer
+from sylvie.interpreter.tokens import TokenType
 
 
 class Parser:
@@ -27,15 +27,27 @@ class Parser:
         expr: returns result of input expression.
     """
 
-    def __init__(self, text: str) -> None:
+    def __init__(self) -> None:
+        """Initialize parser."""
+        self.lexer = Lexer()
+        self.tokens = None
+        self.column = 0
+        self.current_token = None
+
+    def parse(self, text: str) -> Union[int, float]:
         """Parses tokens and evaluates the expression formed.
+
+        This function takes an expression as input and returns its value
+        after evaluating.
 
         Args:
             text: text to be parsed.
         """
-        self.tokens = Lexer(text).get_tokens()
+        self.tokens = self.lexer.analyze(text)
         self.column = 0
         self.advance()
+
+        return self.expr()
 
     def advance(self) -> None:
         """Move to next token and increase column count."""
@@ -64,11 +76,11 @@ class Parser:
         if self.current_token.type == expected_token:
             self.advance()
         else:
-            self.error(
-                "Unexpected character '{}' at column {}, expected '{}'".format(
-                    self.current_token.value, self.column, expected_token.value
-                )
-            )
+            msg = f"character '{self.current_token.value}'"
+            if self.current_token.type == TokenType.EOF:
+                msg = "end of expression"
+
+            self.error(f"unexpected {msg} at column {self.column}")
 
     def factor(self) -> Union[int, float]:
         """Extracts NUMBER or PAREN terminal.
@@ -114,11 +126,7 @@ class Parser:
                 result *= self.term()
             elif self.current_token.type == TokenType.DIV:
                 self.eat(TokenType.DIV)
-                try:
-                    result /= self.term()
-                except ZeroDivisionError:
-                    print("Oh! Its beyond my limit")
-                    raise
+                result /= self.term()
         return result
 
     def sub_expr(self) -> Union[int, float]:
