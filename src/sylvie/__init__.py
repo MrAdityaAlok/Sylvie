@@ -25,12 +25,7 @@ from typing import Union
 
 
 class Sylvie:
-    """Evaluates the given mathematical expressions.
-
-    Attributes:
-        interpreter_type: Optional; An integer value representing
-            type of interpreter to be used.
-    """
+    """Evaluates the given mathematical expressions."""
 
     def __init__(self, interpreter_type: int = 0) -> None:
         """Initializes Sylvie's interpreter type.
@@ -72,7 +67,8 @@ class Sylvie:
         else:
             # from sylvie.ast_based.parser import Parser
             raise NotImplementedError(
-                "Parser for ast based interpreter has not been implemented yet."
+                "Parser for ast based interpreter has not been implemented"
+                " yet."
             )
 
         return Parser(text=text).expr()
