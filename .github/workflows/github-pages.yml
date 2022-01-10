@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v2
 
       - name: Install dependencies
-        run: pip3 install -r requirements.txt
+        run: pip3 install -r requirements.txt && pip3 install -e .
 
       - name: Build and Commit
         run: |
@@ -25,7 +25,8 @@ jobs:
           cd docs && make html && cd _build/html
           git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
           git config --local user.name "sylvie-github-actions[bot]"
-          git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})" -a
+          git add .
+          git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
