@@ -25,7 +25,7 @@ jobs:
           cd docs && make html && cd _build/html
           git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
           git config --local user.name "sylvie-github-actions[bot]"
-          git add .
+          git add -f . # _build is ignored by .gitignore
           git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})"
 
       - name: Push changes
