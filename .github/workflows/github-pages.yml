@@ -22,9 +22,9 @@ jobs:
           sphinx-apidoc -fePM -o docs src/sylvie
           sphinx-build -a -b html docs docs/_build
           cd docs && make html && cd $(mktemp -d) && cp -r $GITHUB_WORKSPACE/docs/_build/html/* .
+          git init
           git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
           git config --local user.name "sylvie-github-actions[bot]"
-          git init
           git remote add origin git@github.com:MrAdityaAlok/Sylvie.git
           git add .
           git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})"
