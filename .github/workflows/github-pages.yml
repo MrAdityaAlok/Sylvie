@@ -9,14 +9,27 @@ jobs:
     steps:
       - uses: actions/checkout@master
         with:
+          persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
       - uses: actions/setup-python@v2
+
       - name: Install dependencies
         run: pip3 install -r requirements.txt
+
       - name: Build and Commit
-        uses: sphinx-notes/pages@v2
+        run: |
+          mkdir -p docs/html
+          sphinx-apidoc -fePM -o docs/source src/sylvie
+          sphinx-build -a -b html docs/source docs/html
+          cd docs/html
+          git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
+          git config --local user.name "sylvie-github-actions[bot]"
+          git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})" -a
+
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
+          directory: docs/html
