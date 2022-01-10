@@ -20,9 +20,9 @@ jobs:
       - name: Build and Commit
         run: |
           mkdir -p docs/html
-          sphinx-apidoc -fePM -o docs/source src/sylvie
-          sphinx-build -a -b html docs/source docs/html
-          cd docs/html
+          sphinx-apidoc -fePM -o docs src/sylvie
+          sphinx-build -a -b html docs docs/_build
+          cd docs && make html && cd _build/html
           git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
           git config --local user.name "sylvie-github-actions[bot]"
           git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})" -a
@@ -32,4 +32,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          directory: docs/html
+          directory: docs/_build/html
