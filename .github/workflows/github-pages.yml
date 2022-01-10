@@ -22,10 +22,12 @@ jobs:
           mkdir -p docs/html
           sphinx-apidoc -fePM -o docs src/sylvie
           sphinx-build -a -b html docs docs/_build
-          cd docs && make html && cd _build/html
+          cd docs && make html && cd $(mktemp -d) && cp -r _build/html/* .
           git config --local user.email "dev.aditya.alok+sylvie+github+actions@gmail.com"
           git config --local user.name "sylvie-github-actions[bot]"
-          git add -f . # _build is ignored by .gitignore
+          git init
+          git remote add origin git@github.com:MrAdityaAlok/Sylvie.git
+          git add .
           git commit -m "docs: add changes for $(git rev-parse --short ${GITHUB_SHA})"
 
       - name: Push changes
